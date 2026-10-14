@@ -3,21 +3,26 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename != '':
+                return f"<h1>Success! File uploaded: {file.filename}</h1><a href='/'>Go Back</a>"
+        return "<h1>No file selected</h1><a href='/'>Go Back</a>"
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    if 'file' not in request.files:
-        return "No file uploaded"
-    file = request.files['file']
-    if file.filename == '':
-        return "No file selected"
-    # Just show result page
-    return render_template('result.html', filename=file.filename)
+    if request.method == 'POST':
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename != '':
+                return f"<h1>Success! File uploaded: {file.filename}</h1><a href='/'>Go Back</a>"
+        return "<h1>No file selected</h1><a href='/'>Go Back</a>"
+    return render_template('index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
-        
