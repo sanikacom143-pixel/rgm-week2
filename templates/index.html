@@ -1,23 +1,40 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>RGM Week2 - Pixel</title>
-<style>
-body { font-family: Arial; background: #f0f0f0; text-align: center; padding: 50px; }
-.box { background: white; padding: 30px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-input { margin: 15px; padding: 10px; }
-button { background: #6c5ce7; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
-button:hover { background: #5a4bd1; }
-</style>
-</head>
-<body>
-<div class="box">
-<h2>📸 Pixel - RGM Week 2</h2>
-<p>Upload Image to Process</p>
-<form action="/"upload" method="post" enctype="multipart/form-data">
-<input type="file" name="file" accept="image/*" required><br>
-<button type="submit">Upload & Process</button>
-</form>
+<html><head><title>Week 2 - OOP Models</title>
+<style>body{font-family:Arial;padding:20px;background:#f5f5f5}.box{border:1px solid #ccc;padding:15px;margin:10px 0;border-radius:8px;background:white} input,button{padding:8px;margin:5px} button{background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer} h1{color:#333}</style>
+</head><body>
+<h1>Week 2: OOP Models & Student Data - RGM Project</h1>
+
+<div class="box"><h3>1. Student Registration (Student Class)</h3>
+<form method="POST"><input type="hidden" name="action" value="add_student">
+Roll: <input name="roll_no" required> Name: <input name="name" required> Class: <input name="class_name" required>
+<button>Add Student</button></form>
+<p><b>Total Students: {{students|length}}</b></p>
+{% for s in students %}{{s.roll_no}} - {{s.name}} - {{s.class_name}} ({{s.status}})<br>{% endfor %}
 </div>
-</body>
-</html>
+
+<div class="box"><h3>2. Hall & Seat-Layout Configuration (Hall, Seat, ClassRoom)</h3>
+<form method="POST"><input type="hidden" name="action" value="add_hall">
+Hall Name: <input name="hall_name" required> Rows: <input name="rows" type="number" required> Cols: <input name="cols" type="number" required>
+<button>Add Hall</button></form>
+{% for h in halls %}Hall {{h.hall_id}}: {{h.name}} - {{h.rows}}x{{h.cols}} = {{h.total_seats}} seats<br>{% endfor %}
+</div>
+
+<div class="box"><h3>3. Exam-Session Creation (Exam Class)</h3>
+<form method="POST"><input type="hidden" name="action" value="add_exam">
+Subject: <input name="subject" required> Date: <input name="date" type="date" required> Session: <input name="session" placeholder="FN/AN" required>
+<button>Add Exam</button></form>
+{% for e in exams %}{{e.exam_id}}: {{e.subject}} - {{e.date}} {{e.session}}<br>{% endfor %}
+</div>
+
+<div class="box"><h3>4. Student-Class Validation | 5. Seat Availability | 6. Arrangement-Status Tracking</h3>
+<form method="POST"><input type="hidden" name="action" value="generate"><button style="background:green;padding:12px">Generate Seating Arrangement (Optimizer + ConstraintRule)</button></form>
+{% for a in arrangements %}
+<p><b>Arrangement {{a.arrangement_id}} - Status: {{a.status}} - Hall: {{a.hall_id}}</b><br>
+Assignments (SeatID:RollNo): {{a.assignments}}</p>
+{% endfor %}
+</div>
+
+<div class="box" style="background:#d4edda"><h3>✅ All 8 Classes Implemented: Student, ClassRoom, Hall, Seat, Exam, SeatingArrangement, ConstraintRule, SeatingOptimizer</h3>
+<p>✅ 6 Features: Registration, Hall Config, Exam Creation, Validation, Availability Tracking, Status Tracking</p></div>
+
+</body></html>
